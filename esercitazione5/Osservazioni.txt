@@ -1,0 +1,18 @@
+Le misurazioni sono state effettuate su 100 vettori di interi generati casualmente per ogni dimensione n da 2 a 100, prendendo come tempo il totale della fase di ordinamento diviso per il numero di vettori.
+Il programma è stato compilato e lanciato in entrambe le modalità Debug (-O0) e Release (-O3) per confrontare l'effetto delle ottimizzazioni del compilatore.
+I risultati sono salvati nei file times_debug.csv e times_release.csv.
+I quattro grafici allegati sono:
+  - panorama_debug.png  : confronto di tutti gli algoritmi in Debug
+  - panorama_release.png: confronto di tutti gli algoritmi in Release
+  - zoom_debug.png      : zoom sui 4 algoritmi più veloci in Debug
+  - zoom_release.png    : zoom sui 4 algoritmi più veloci in Release
+I due grafici panoramici sono stati realizzati con la stessa scala sull'asse y per renderli direttamente confrontabili. 
+La differenza più evidente è che in Release tutti i tempi si accorciano in modo netto.
+In entrambe le modalità si osserva chiaramente la separazione tra algoritmi quadratici e algoritmi più efficienti.
+Bubblesort e Selectionsort essendo O(n^2), crescono visibilmente più rapidamente rispetto a Quicksort, Hybrid e std::sort, soprattutto man mano che n cresce.
+Una osservazione interessante riguarda Mergesort, che pur avendo complessità O(n log n) come Quicksort risulta visibilmente più lento dei tre algoritmi più veloci (Quick, Hybrid, std::sort) e di Insertionsort in entrambe le modalità.
+I grafici zoom mostrano solo Insertion, Quick, Hybrid e std::sort, con scala sull'asse y 5 volte maggiore per Debug.
+La differenza tra Debug e Release qui diventa sorprendente.
+In Debug (zoom_debug.png) il comportamento è quello "atteso" da una lettura asintotica: Quicksort e Hybrid sono i più veloci, std::sort si comporta come una via di mezzo, e Insertionsort cresce più rapidamente raggiungendo gli altri intorno a n = 40 e superandoli per n più grandi.
+In Release (zoom_release.png), invece, Insertionsort, Hybrid e std::sort sono praticamente sovrapposti e restano i più veloci per tutti gli n testati, mentre Quicksort puro risulta sistematicamente più lento. Per n <= 100, Insertionsort non viene mai superato da Quicksort, e l'eventuale crossover si trova oltre n = 100.
+Per il Quicksort ibrido ho scelto come soglia n = 40, sulla base del crossover osservato in modalità Debug. In Release la soglia sarebbe in linea di principio più alta (oltre n = 100), ma una soglia di 40 produce comunque buoni risultati anche in Release.
